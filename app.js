@@ -1,13 +1,15 @@
 const express = require('express');
 const logger = require('./middleware/logger');
+const responseFormatter = require('./middleware/responseFormatter');
 
 const app = express();
 
 app.use(express.json());
 app.use(logger);
+app.use(responseFormatter);
 
 app.get('/health', (req, res) => {
-    res.json({ message: 'Library API is running' });
+    res.success({ message: 'Library API is running' });
 });
 
 const PORT = 3008;
