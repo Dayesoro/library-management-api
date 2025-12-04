@@ -3,6 +3,7 @@ const logger = require('./middleware/logger');
 const responseFormatter = require('./middleware/responseFormatter');
 
 const authorRoutes = require('./routes/author.route');
+const bookRoutes = require('./routes/book.route');
 
 const app = express();
 
@@ -11,6 +12,7 @@ app.use(logger);
 app.use(responseFormatter);
 
 app.use('/api/authors', authorRoutes);
+app.use('/api/books', bookRoutes);
 
 app.get('/health', (req, res) => {
     res.success({ message: 'Library API is running' });
