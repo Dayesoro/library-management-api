@@ -4,6 +4,7 @@ const responseFormatter = require('./middleware/responseFormatter');
 
 const authorRoutes = require('./routes/author.route');
 const bookRoutes = require('./routes/book.route');
+const borrowRoutes = require('./routes/borrow.route');
 
 const app = express();
 
@@ -13,6 +14,7 @@ app.use(responseFormatter);
 
 app.use('/api/authors', authorRoutes);
 app.use('/api/books', bookRoutes);
+app.use('/api/borrows', borrowRoutes);
 
 app.get('/health', (req, res) => {
     res.success({ message: 'Library API is running' });

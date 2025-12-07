@@ -23,9 +23,14 @@ let authors = [
     name: 'Haruki Murakami',
     birthYear: 1949,
     country: 'Japan'
+  },
+  {
+    id: 5,
+    name: 'Agatha Christie',
+    birthYear: 1890,
+    country: 'United Kingdom'
   }
 ];
-
 
 // Books array - stores book information
 // Note: authorId links to an author in the authors array
@@ -92,11 +97,86 @@ let books = [
     authorId: 4,
     availableCopies: 2,
     totalCopies: 3
+  },
+  {
+    id: 8,
+    title: 'Murder on the Orient Express',
+    isbn: '9780062693662',
+    publishedYear: 1934,
+    authorId: 5,
+    availableCopies: 3,
+    totalCopies: 4
   }
 ];
 
 // Borrows array - tracks who borrowed which books
-let borrows = [];
+let borrows = [
+  {
+    id: 1,
+    bookId: 2,
+    borrowerName: 'Alice Johnson',
+    borrowDate: '2024-11-15T10:00:00.000Z', // 22 days ago - OVERDUE
+    returnDate: null,
+    status: 'borrowed'
+  },
+  {
+    id: 2,
+    bookId: 2,
+    borrowerName: 'Bob Smith',
+    borrowDate: '2024-11-20T14:30:00.000Z', // 17 days ago - OVERDUE
+    returnDate: null,
+    status: 'borrowed'
+  },
+  {
+    id: 3,
+    bookId: 6,
+    borrowerName: 'Charlie Brown',
+    borrowDate: '2024-11-10T09:00:00.000Z', // 27 days ago - OVERDUE
+    returnDate: null,
+    status: 'borrowed'
+  },
+  {
+    id: 4,
+    bookId: 6,
+    borrowerName: 'Diana Prince',
+    borrowDate: '2024-11-18T16:45:00.000Z', // 19 days ago - OVERDUE
+    returnDate: null,
+    status: 'borrowed'
+  },
+  {
+    id: 5,
+    bookId: 1,
+    borrowerName: 'Eve Martinez',
+    borrowDate: '2024-12-01T11:20:00.000Z', // 6 days ago - NOT overdue
+    returnDate: null,
+    status: 'borrowed'
+  },
+  {
+    id: 6,
+    bookId: 3,
+    borrowerName: 'Frank Miller',
+    borrowDate: '2024-12-03T13:15:00.000Z', // 4 days ago - NOT overdue
+    returnDate: null,
+    status: 'borrowed'
+  },
+  {
+    id: 7,
+    bookId: 4,
+    borrowerName: 'Grace Lee',
+    borrowDate: '2024-11-05T08:30:00.000Z', // 32 days ago - but RETURNED
+    returnDate: '2024-11-19T10:00:00.000Z',
+    status: 'returned'
+  },
+  {
+    id: 8,
+    bookId: 5,
+    borrowerName: 'Henry Wilson',
+    borrowDate: '2024-10-20T15:00:00.000Z', // 48 days ago - but RETURNED
+    returnDate: '2024-11-10T09:30:00.000Z',
+    status: 'returned'
+  }
+
+];
 
 module.exports = {
   authors,
