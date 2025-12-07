@@ -1,4 +1,4 @@
-const { authors } = require('./data');
+const { authors, books } = require('./data');
 
 // Helper function to get the next available ID
 const getNextId = () => {
@@ -13,8 +13,8 @@ const getAllAuthors = () => {
 
 // Get a single author by ID
 const getAuthorById = (id) => {
-    const author = authors.find(a => a.id === id);
-    return author || null;
+  const author = authors.find(a => a.id === id);
+  return author || null;
 }
 
 // Create a new author
@@ -25,51 +25,61 @@ const createAuthor = (name, birthYear, country) => {
     birthYear: birthYear,
     country: country
   };
-  
-  authors.push(newAuthor); 
-  return newAuthor;        
+
+  authors.push(newAuthor);
+  return newAuthor;
 };
 
 // Update an existing author
 const updateAuthor = (id, name, birthYear, country) => {
   const index = authors.findIndex(a => a.id === id);
-  
+
   if (index === -1) {
     return null;
   }
-    
- if (name) {
-     authors[index].name = name;
- }
-    
- if (birthYear) {
-     authors[index].birthYear = birthYear;
- }
-    
-if (country) {
-        authors[index].country = country;
-}  
-  
-  return authors[index]; 
+
+  if (name) {
+    authors[index].name = name;
+  }
+
+  if (birthYear) {
+    authors[index].birthYear = birthYear;
+  }
+
+  if (country) {
+    authors[index].country = country;
+  }
+
+  return authors[index];
 };
 
 
 // Delete an author by ID
 const deleteAuthor = (id) => {
   const index = authors.findIndex(a => a.id === id);
-  
+
   if (index === -1) {
     return null;
   }
-  
+
+  // Check if author has books
+  const authorHasBooks = books.some(book => book.authorId === id);
+
+  if (authorHasBooks) {
+    return {
+      success: false,
+      error: 'Cannot delete author with existing books'
+    };
+  }
+
   const deletedAuthor = authors.splice(index, 1)[0];
-  return deletedAuthor; // Return the deleted author
+  return { success: true, data: deletedAuthor }
 };
 
 module.exports = {
-    getAllAuthors,
-    getAuthorById,
-    createAuthor,
-    updateAuthor,
-    deleteAuthor
+  getAllAuthors,
+  getAuthorById,
+  createAuthor,
+  updateAuthor,
+  deleteAuthor
 };

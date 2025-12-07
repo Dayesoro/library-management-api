@@ -1,4 +1,4 @@
-const { books, authors } = require('./data');
+const { books, authors, borrows } = require('./data');
 
 // Helper function to get the next available ID
 const getNextId = () => {
@@ -14,8 +14,8 @@ const authorExists = (authorId) => {
 
 
 // Get all books
-const getAllBooks = () => { 
-    return books;
+const getAllBooks = () => {
+  return books;
 }
 
 // Get a single book by ID
@@ -28,9 +28,9 @@ const getBookById = (id) => {
 const createBook = (title, isbn, publishedYear, availableCopies, totalCopies, authorId) => {
   // Check if author exists
   if (!authorExists(authorId)) {
-    return null; 
+    return null;
   }
-  
+
   const newBook = {
     id: getNextId(),
     title: title,
@@ -40,7 +40,7 @@ const createBook = (title, isbn, publishedYear, availableCopies, totalCopies, au
     totalCopies: totalCopies,
     authorId: authorId
   };
-  
+
   books.push(newBook);
   return newBook;
 };
@@ -48,40 +48,40 @@ const createBook = (title, isbn, publishedYear, availableCopies, totalCopies, au
 // Update an existing book
 const updateBook = (id, title, isbn, publishedYear, availableCopies, totalCopies, authorId) => {
   const index = books.findIndex(b => b.id === id);
-  
+
   if (index === -1) {
     return null; // Book not found
   }
-  
+
   // If authorId is being updated, check if new author exists
   if (authorId && !authorExists(authorId)) {
-    return null; 
+    return null;
   }
-  
+
   if (title) {
     books[index].title = title;
   }
-  
+
   if (isbn) {
     books[index].isbn = isbn;
   }
-  
+
   if (publishedYear) {
     books[index].publishedYear = publishedYear;
   }
-  
+
   if (availableCopies !== undefined) {
     books[index].availableCopies = availableCopies;
   }
-  
+
   if (totalCopies !== undefined) {
     books[index].totalCopies = totalCopies;
   }
-  
+
   if (authorId) {
     books[index].authorId = authorId;
   }
-  
+
   return books[index];
 };
 
@@ -89,13 +89,25 @@ const updateBook = (id, title, isbn, publishedYear, availableCopies, totalCopies
 // Delete a book by ID
 const deleteBook = (id) => {
   const index = books.findIndex(b => b.id === id);
-  
+
   if (index === -1) {
     return null;
   }
-  
+
+  // Check if book has active borrows (unreturned)
+  const hasActiveBorrows = borrows.some(
+    borrow => borrow.bookId === id && borrow.status === 'borrowed'
+  );
+
+  if (hasActiveBorrows) {
+    return {
+      success: false,
+      error: 'Cannot delete book with active borrows'
+    };
+  }
+
   const deletedBook = books.splice(index, 1)[0];
-  return deletedBook;
+  return { success: true, data: deletedBook };
 };
 
 
@@ -103,8 +115,8 @@ const deleteBook = (id) => {
 const searchBooks = (searchTerm) => {
 
   const term = searchTerm.toLowerCase();
-  
-  return books.filter(book => 
+
+  return books.filter(book =>
     book.title.toLowerCase().includes(term)
   );
 };
